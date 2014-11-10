@@ -33,7 +33,6 @@ class MSPABot(praw.Reddit):
         self.rss = rss
         self.sr = sr
         self.refresh = refresh
-        self.page_number = 0
         self.next_page_number = 0
         
         self.tryLogin(self.usr, self.pss)
@@ -56,8 +55,8 @@ class MSPABot(praw.Reddit):
         sorted_entries = sorted(feed.entries, key=attrgetter('published_parsed'))
         latest_entry = sorted_entries[len(feed.entries)-1]
         page_link = latest_entry.link
-        self.page_number = int(page_link[-6:])
-        self.next_page_number = self.page_number + 1
+        page_number = int(page_link[-6:])
+        self.next_page_number = page_number + 1
         self.updateLatestPage()
         
     def tryLogin(self, Username, Password):
@@ -73,8 +72,7 @@ class MSPABot(praw.Reddit):
             warnings.simplefilter("ignore")
             while (getStatusCode('www.mspaintadventures.com', '/6/' + str(self.next_page_number).zfill(6) + '.txt') == 200):
                 self.next_page_number += 1
-        self.page_number = self.next_page_number - 1
-        tsPrint('[ INFO] Latest page: http://www.mspaintadventures.com/?s=6&p=' + str(self.page_number).zfill(6))
+        tsPrint('[ INFO] Latest page: http://www.mspaintadventures.com/?s=6&p=' + str(self.next_page_number - 1).zfill(6))
 
     def checkMspa(self):
         tsPrint('[ INFO] Checking for upd8...')
