@@ -25,13 +25,12 @@ def getStatusCode(host, path="/"):
 
 class MSPABot(praw.Reddit):
     
-    def __init__(self, user_agent, usr, pss, rss, sr, channel, refresh):
+    def __init__(self, user_agent, usr, pss, rss, sr, refresh):
         super().__init__(user_agent)
         self.usr = usr
         self.pss = pss
         self.rss = rss
         self.sr = sr
-        self.channel = channel
         self.refresh = refresh
         self.page_number = 0
         self.next_page_number = 0
@@ -120,6 +119,5 @@ if __name__ == '__main__':
                       pss = '',
                       rss = 'http://www.mspaintadventures.com/rss/rss.xml',
                       sr = 'homestuck',
-                      channel = '#homestuck',
                       refresh = 5)
         bot.run()
