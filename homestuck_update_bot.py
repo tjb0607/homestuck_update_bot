@@ -37,25 +37,6 @@ class MSPABot(praw.Reddit):
         
         self.tryLogin(self.usr, self.pss)
         
-        tsPrint('[ INFO] Finding latest page')
-        feed = feedparser.parse(self.rss)
-        if (feed.entries == []):
-            try:
-                tsPrint('[ALERT] Error while fetching feed: ' + str(feed.bozo_exception))
-            except AttributeError:
-                tsPrint('[ALERT] Unknown error while fetching feed')
-            quit()
-        #get rid of that god damn hscroll test
-        i = 0
-        for entry in feed.entries:
-            if(entry.published == ''):
-                del feed.entries[i]
-            i += 1
-        
-        sorted_entries = sorted(feed.entries, key=attrgetter('published_parsed'))
-        latest_entry = sorted_entries[len(feed.entries)-1]
-        page_link = latest_entry.link
-        self.next_page_number = int(page_link[-6:]) + 1
         self.updateLatestPage()
         
     def tryLogin(self, Username, Password):
@@ -67,6 +48,31 @@ class MSPABot(praw.Reddit):
         tsPrint('[LOGIN] Logged in as ' + Username)
 
     def updateLatestPage(self):
+        
+        tsPrint('[ INFO] Finding latest page')
+        feed = feedparser.parse(self.rss)
+        if (feed.entries == []):
+            try:
+                tsPrint('[ALERT] Error while fetching feed: ' + str(feed.bozo_exception))
+            except AttributeError:
+                tsPrint('[ALERT] Unknown error while fetching feed')
+            quit()
+        
+        #get rid of that god damn hscroll test
+        i = 0
+        for entry in feed.entries:
+            if(entry.published == ''):
+                del feed.entries[i]
+            i += 1
+        
+        sorted_entries = sorted(feed.entries, key=attrgetter('published_parsed'))
+        latest_entry = sorted_entries[len(feed.entries)-1]
+        page_link = latest_entry.link
+        next_page_number = int(page_link[-6:]) + 1
+        if (self.next_page_number < next_page_number):
+            self.next_page_number = next_page_number
+        
+        #just in case the rss feed is behind
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             while (getStatusCode('www.mspaintadventures.com', '/6/' + str(self.next_page_number).zfill(6) + '.txt') == 200):
