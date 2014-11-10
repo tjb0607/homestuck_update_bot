@@ -55,8 +55,7 @@ class MSPABot(praw.Reddit):
         sorted_entries = sorted(feed.entries, key=attrgetter('published_parsed'))
         latest_entry = sorted_entries[len(feed.entries)-1]
         page_link = latest_entry.link
-        page_number = int(page_link[-6:])
-        self.next_page_number = page_number + 1
+        self.next_page_number = int(page_link[-6:]) + 1
         self.updateLatestPage()
         
     def tryLogin(self, Username, Password):
