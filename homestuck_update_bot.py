@@ -95,10 +95,10 @@ class MSPABot(praw.Reddit):
             except praw.errors.AlreadySubmitted:
                 tsPrint('[ALERT] Already posted')
             
-            self.updateLatestPage()
-            
             tsPrint('[SLEEP] Sleeping for 10m...')
             time.sleep(600)
+            
+            self.updateLatestPage()
             
         else:
             tsPrint('[ INFO] %s' % status)
