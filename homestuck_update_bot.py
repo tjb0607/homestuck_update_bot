@@ -41,7 +41,7 @@ class MSPABot(praw.Reddit):
         self.refresh = refresh
         self.next_page_number = 0
         
-        #self.tryLogin(self.usr, self.pss)
+        self.tryLogin(self.usr, self.pss)
         
         self.updateLatestPage()
         
@@ -153,6 +153,7 @@ class MSPABot(praw.Reddit):
                 time.sleep(self.refresh)
             except:
                 tsPrint('[ALERT] Exception: ', sys.exc_info()[0])
+                time.sleep(5)
                 pass
 
 if __name__ == '__main__':
