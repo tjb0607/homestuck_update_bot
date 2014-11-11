@@ -46,9 +46,10 @@ class MSPABot(praw.Reddit):
         self.updateLatestPage()
         
     def tryLogin(self, Username, Password):
+        tsPrint('[ INFO] Logging in as ' + Username + '...')
         self.login(Username, Password)
         if (self.is_logged_in() == False):
-            tsPrint('[ALERT] Login fail as ' + Username)
+            tsPrint('[ALERT] Login failed as ' + Username)
             time.sleep(30)
             self.tryLogin(Username, Password)
             return
@@ -56,7 +57,7 @@ class MSPABot(praw.Reddit):
 
     def updateLatestPage(self):
         
-        tsPrint('[ INFO] Finding latest page')
+        tsPrint('[ INFO] Finding latest page...')
         
         try:
             feed = feedparser.parse(self.rss)
@@ -103,7 +104,7 @@ class MSPABot(praw.Reddit):
             warnings.simplefilter("ignore")
             status = getStatusCode('www.mspaintadventures.com', '/6/' + str(self.next_page_number).zfill(6) + '.txt')
             if status != 404:
-                tsPrint('[ INFO] Next page number (' + str(self.next_page_number) + ') is either behind or not responding. Finding by counting.')
+                tsPrint('[ INFO] Next page number (' + str(self.next_page_number) + ') is either behind or not responding. Finding by counting...')
                 tsPrint('[ INFO] ' + str(self.next_page_number) + ': ' + str(status))
                 while (status != 404):
                     if status == 200:
