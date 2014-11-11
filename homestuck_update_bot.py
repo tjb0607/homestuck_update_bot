@@ -77,7 +77,7 @@ class MSPABot(praw.Reddit):
                 sorted_entries = sorted(feed.entries, key=attrgetter('published_parsed'))
             except TypeError as e:
                 raise RssParseError('Error sorting feed: ' + str(e))
-            latest_entry = sorted_entries[len(feed.entries)-1]
+            latest_entry = sorted_entries[len(sorted_entries)-1]
             page_link = latest_entry.link
             
             try:
@@ -97,8 +97,6 @@ class MSPABot(praw.Reddit):
             time.sleep(30)
             self.updateLatestPage()
             return
-        
-        self.next_page_number = 8890
         
         #just in case the rss feed is behind
         with warnings.catch_warnings():
