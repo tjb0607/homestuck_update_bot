@@ -8,6 +8,7 @@ import http.client
 import urllib.request
 import warnings
 import html
+import html.parser
 
 #Print with timestamp
 def tsPrint(message):
@@ -125,9 +126,14 @@ class MSPABot(praw.Reddit):
             tsPrint('[ INFO] Upd8 found! ' + link)
             response = urllib.request.urlopen('http://www.mspaintadventures.com/6/' + str(self.next_page_number).zfill(6) + '.txt')
             txt = response.read().decode('utf-8')
-            title = html.unescape(txt.split('\n')[0])
+            if sys.version_info[0] == 3 and sys.version_info[1] <= 3:
+                title = html.parser.HTMLParser().unescape(txt.split('\n')[0])
+            else:
+                title = html.unescape(txt.split('\n')[0])
+                
             if (self.is_logged_in() == False):
                 self.tryLogin(self.usr, self.pss)
+                
             try:
                 submission = self.submit(self.sr, '[UPDATE %d] %s' % (self.next_page_number, title), url=link)
                 tsPrint('[ POST] Posted to reddit! ' + submission.short_link)
