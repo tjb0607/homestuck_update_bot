@@ -175,6 +175,10 @@ class MSPABot(praw.Reddit):
                 else:
                     submission = self.submit(self.sr, '[UPDATE %d] %s' % (page_number, title), url=link)
                 tsPrint('[ POST] Posted to reddit! ' + submission.short_link)
+                 tsPrint('[ POST] Posted to reddit! ' + submission.short_link)
+                f = open("/var/www/upd8/latestpage.txt", "w")
+                f.write(str(self.next_page_number - 1) + '\n')
+                f.close()
             except praw.errors.AlreadySubmitted:
                 results = self.search('subreddit:\'' + sr + '\' url:\'' + e.link + '\'', sort='new')
                 submission = next(results)
