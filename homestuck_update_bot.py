@@ -183,8 +183,8 @@ class MSPABot(praw.Reddit):
                 tsPrint('[ALERT] Unexpected exception: ' + str(sys.exc_info()[0]))
                 time.sleep(600)
 
-            tsPrint('[SLEEP] Sleeping for 30m...')
-            time.sleep(1800)
+            tsPrint('[SLEEP] Sleeping for 10m...')
+            time.sleep(600)
             
             f = open("/var/www/upd8/check.js", "w")
             f.write('shownoupd8();\n')
